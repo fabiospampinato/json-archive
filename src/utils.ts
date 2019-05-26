@@ -43,7 +43,7 @@ const Utils = {
           const f = stat.isDirectory () ? await getFilepaths ( res ) : [res];
           files.push ( ...f );
         }));
-        return files;
+        return files.sort ();
       }
 
       return getFilepaths ( folderPath );
