@@ -8,7 +8,6 @@ import Utils from './utils';
 
 //TODO: Add a CLI aliased to `jsar` (inspired to asar)
 //TODO: Add support for more stuff (symlinks, empty dirs, preserving permissions etc.)
-//TODO: Ensure that this works under Windows too
 
 const Archive = {
 

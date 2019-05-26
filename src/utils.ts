@@ -22,7 +22,7 @@ const Utils = {
 
     getCWD (): string {
 
-      return Node.is ? Node.process.cwd () : '/';
+      return Node.is ? Utils.path.posixify ( Node.process.cwd () ) : '/';
 
     },
 
@@ -38,7 +38,7 @@ const Utils = {
         const files: string[] = [];
         const subs = await Node.fs.readdir ( dir );
         await Promise.all ( subs.map ( async sub => {
-          const res = Node.path.resolve ( dir, sub );
+          const res = Utils.path.getAbsolute ( sub, dir );
           const stat = await Node.fs.stat ( res );
           const f = stat.isDirectory () ? await getFilepaths ( res ) : [res];
           files.push ( ...f );
@@ -56,7 +56,7 @@ const Utils = {
 
       if ( !basePath ) basePath = Utils.path.getCWD ();
 
-      return Node.path.resolve ( basePath, filePath );
+      return Utils.path.posixify ( Node.path.resolve ( basePath, filePath ) );
 
     },
 
@@ -64,7 +64,14 @@ const Utils = {
 
       if ( !Node.is ) return filePath;
 
-      return Node.path.relative ( basePath, filePath );
+
+      return Utils.path.posixify ( Node.path.relative ( basePath, filePath ) );
+
+    },
+
+    posixify ( filePath: string ): string {
+
+      return filePath.replace ( /\\/g, '/' );
 
     }
 
