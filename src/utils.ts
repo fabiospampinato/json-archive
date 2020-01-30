@@ -140,7 +140,7 @@ const Utils = {
 
     write ( filePath: string, archive: Archive ): Promise<void> {
 
-      const contents = JSON.stringify ( archive, undefined, 2 );
+      const contents = JSON.stringify ( archive );
 
       return Utils.file.write ( filePath, contents, 'utf8' );
 
