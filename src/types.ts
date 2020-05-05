@@ -12,7 +12,7 @@ type PackOptions = string | {
 };
 
 type ExtractOptions = string | {
-  dest: string,
+  dest?: string,
   filter?: Filter,
   transform?: Transform,
   extract?: ( relativePath: string, file: File ) => void | Promise<void>
