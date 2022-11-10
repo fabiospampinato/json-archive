@@ -5,8 +5,8 @@ Simple archive format based on JSON.
 ## Features
 
 - **Simple**: It converts a directory into a human-inspectable JSON object that maps file paths to their base-64 encoded contents.
-- **Tiny**: The whole package comes at about ~1kb, with 0 dependencies.
-- **Universal**: This library can be used in browser environments too, and you could also just load the produced JSON archive natively.
+- **Tiny**: The whole package comes at about ~1kb, with 0 third-party dependencies.
+- **Universal**: Archives can be visited with the "visit" function in the browser too.
 
 ## Install
 
@@ -22,35 +22,33 @@ The following interface is provided:
 
 ```ts
 interface JSONArchive {
-  async pack ( source: string, options?: PackOptions ): Promise<Archive>;
-  async extract ( source: string | Archive, options?: ExtractOptions ): Promise<void>;
+  pack ( folderPath: string, options?: VisitOptions ): Promise<Archive>;
+  unpack ( archivePath: string, options?: VisitOptions ): Promise<Archive>;
+  visit ( archive: Archive, options?: VisitOptions ): Promise<Archive>;
 };
 
 // Types
 
-type Filter = ( relativePath: string ) => boolean;
-type Transform = ( file: File ) => File;
+type Promisable<T> = T | Promise<T>;
 
-type PackOptions = string | {
-  dest: string,
-  filter?: Filter,
-  transform?: Transform,
-  pack?: ( archive: Archive ) => void | Promise<void>
-};
+type Filter = ( filePathRelative: string ) => Promisable<boolean>;
 
-type ExtractOptions = string | {
-  dest: string,
-  filter?: Filter,
-  transform?: Transform,
-  extract?: ( relativePath: string, file: File ) => void | Promise<void>
-};
+type Transform = ( file: File ) => Promisable<File>;
+
+type Visit = ( filePathRelative: string, file: File ) => Promisable<void>;
 
 type File = {
   contents: string
 };
 
 type Archive = {
-  [relativePath: string]: File
+  [filePathRelative: string]: File
+};
+
+type VisitOptions = {
+  filter?: Filter,
+  transform?: Transform,
+  visit?: Visit
 };
 ```
 
@@ -59,17 +57,37 @@ type Archive = {
 Do this to pack a directory:
 
 ```ts
-import JSONArchive from 'json-archive';
+import fs from 'fs';
+import {pack} from 'json-archive';
 
-JSONArchive.pack ( 'path/to/dir', 'dir.json' );
+const archive = await pack ( 'path/to/dir' );
+
+fs.writeFileSync ( 'archive.json', JSON.stringify ( archive ) );
 ```
 
-Do this to extract an archive:
+Do this to unpack an archive:
 
 ```ts
-import archive from 'json-archive';
+import fs from 'fs';
+import {unpack} from 'json-archive';
 
-JSONArchive.extract ( 'dir.json', 'dir' );
+const archive = await unpack ( 'archive.json' );
+```
+
+Do this to filter/transform/traverse an archive:
+
+```ts
+import fs from 'fs';
+import {visit} from 'json-archive';
+
+const transformedArchive = await visit ( archive, {
+  filter: filePath => {
+    return !filePath.startsWith ( '.' );
+  },
+  visit: ( filePath, file ) => {
+    fs.writeFileSync ( filePath, file.contents, { encoding: 'base64' } );
+  }
+});
 ```
 
 ## License

@@ -37,5 +37,4 @@ bower_components
 node_modules
 package-lock.json
 dist
-.nyc_output
-coverage
+output

@@ -1,31 +1,28 @@
 
-/* TYPES */
+/* MAIN */
 
-type Filter = ( relativePath: string ) => boolean;
-type Transform = ( file: File ) => File;
+type Promisable<T> = T | Promise<T>;
 
-type PackOptions = string | {
-  dest: string,
-  filter?: Filter,
-  transform?: Transform,
-  pack?: ( archive: Archive ) => void | Promise<void>
-};
+type Filter = ( filePathRelative: string ) => Promisable<boolean>;
 
-type ExtractOptions = string | {
-  dest?: string,
-  filter?: Filter,
-  transform?: Transform,
-  extract?: ( relativePath: string, file: File ) => void | Promise<void>
-};
+type Transform = ( file: File ) => Promisable<File>;
+
+type Visit = ( filePathRelative: string, file: File ) => Promisable<void>;
 
 type File = {
   contents: string
 };
 
 type Archive = {
-  [relativePath: string]: File
+  [filePathRelative: string]: File
+};
+
+type VisitOptions = {
+  filter?: Filter,
+  transform?: Transform,
+  visit?: Visit
 };
 
 /* EXPORT */
 
-export {Filter, Transform, PackOptions, ExtractOptions, File, Archive};
+export type {File, Archive, VisitOptions};
