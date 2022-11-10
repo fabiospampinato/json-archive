@@ -2,7 +2,7 @@
   "name": "json-archive",
   "repository": "github:fabiospampinato/json-archive",
   "description": "Simple archive format based on JSON.",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
