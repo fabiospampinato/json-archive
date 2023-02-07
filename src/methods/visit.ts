@@ -15,7 +15,6 @@ const visitArchive = async ( archive: Archive, options: VisitOptions = {} ): Pro
   const filter = options.filter || yes;
   const transform = options.transform || identity;
 
-
   const clone = JSON.parse ( JSON.stringify ( archive ) );
   const filePathsRelative = Object.keys ( clone );
 
