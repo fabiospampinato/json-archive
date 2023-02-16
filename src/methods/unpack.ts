@@ -1,9 +1,9 @@
 
 /* IMPORT */
 
-import Utils from '../utils';
-import type {Archive, VisitOptions} from '../types';
-import visit from './visit';
+import visit from '~/methods/visit';
+import Utils from '~/utils';
+import type {Archive, VisitOptions} from '~/types';
 
 /* MAIN */
 

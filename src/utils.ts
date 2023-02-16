@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import readdir from 'tiny-readdir';
-import type {File} from './types';
+import type {File} from '~/types';
 
 /* MAIN */
 

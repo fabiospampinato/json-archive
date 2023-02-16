@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import type {Archive, VisitOptions} from '../types';
+import type {Archive, VisitOptions} from '~/types';
 
 /* HELPERS */
 
