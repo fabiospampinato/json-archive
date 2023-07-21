@@ -37,8 +37,11 @@ type Transform = ( file: File ) => Promisable<File>;
 
 type Visit = ( filePathRelative: string, file: File ) => Promisable<void>;
 
+type Encoding = 'ascii' | 'base64' | 'base64url' | 'binary' | 'hex' | 'latin1' | 'utf8' | 'utf-8' | 'utf16le' | 'ucs2' | 'ucs-2';
+
 type File = {
-  contents: string
+  contents: string,
+  encoding: Encoding
 };
 
 type Archive = {

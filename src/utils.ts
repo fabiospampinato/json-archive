@@ -18,7 +18,7 @@ const Utils = {
 
       const contents = fs.readFileSync ( filePath, encoding );
 
-      return {contents};
+      return {contents, encoding};
 
     },
 
